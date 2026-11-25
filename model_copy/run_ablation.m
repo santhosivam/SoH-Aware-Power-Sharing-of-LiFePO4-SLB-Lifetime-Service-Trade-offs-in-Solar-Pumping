@@ -1,0 +1,26 @@
+S = load('climate.mat'); C = S.C;
+P0 = mpc_params;
+o = struct('Ymax',20,'step',10,'sigSoH',0.02,'sigR',0.05,'sigSoC',0.02, ...
+    'seed',1,'stopAtEol',true,'stopImmediately',true,'verbose',false,'solverStep',15);
+T = table;
+for mask = 0:7
+    P = P0; P.strategy = 3;
+    P.useSohWeight = bitget(mask,1) ~= 0;
+    P.useResistanceWeight = bitget(mask,2) ~= 0;
+    P.useSocCeiling = bitget(mask,3) ~= 0;
+    t = tic;
+    R = sim_life(P,C,o);
+    yr = R.yr(end);
+    row = table(mask,P.useSohWeight,P.useResistanceWeight,P.useSocCeiling, ...
+        R.eolYear,numel(R.yr),sum(R.Eun)*365/R.nd/yr, ...
+        sum(R.Esrv)*365/R.nd/yr,sum(R.Vol)*365/R.nd/yr, ...
+        max(R.Tmax(:)),toc(t), ...
+        'VariableNames',{'mask','sohWeight','resistanceWeight','socCeiling', ...
+        'eolYears','simulatedDays','unservedKWhPerYear','servedKWhPerYear', ...
+        'waterM3PerYear','maxModuleC','wallSeconds'});
+    T = [T; row]; %#ok<AGROW>
+    writetable(T,'ablation_results.csv');
+    save('ablation_results.mat','T','o');
+    fprintf('ablation mask %d EoL %.4f y, unserved %.2f kWh/y, wall %.1f s\n', ...
+        mask,R.eolYear,row.unservedKWhPerYear,row.wallSeconds);
+end

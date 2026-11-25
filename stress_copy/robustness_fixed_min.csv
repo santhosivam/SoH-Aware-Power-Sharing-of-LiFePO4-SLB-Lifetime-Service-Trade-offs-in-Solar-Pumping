@@ -1,0 +1,3 @@
+scenario,initialMinSoH,initialMeanSoH,initialSpread,eolYears,unservedKWhPerYear,waterM3PerYear,wallSeconds
+same_min_tight,0.72,0.8175,0.16,11.6241156670351,119.382499812772,35851.080858576,562.9937367
+same_min_wide,0.72,0.8175,0.26,11.5645168478506,148.116965051149,35734.3772419469,489.9857538

@@ -1,0 +1,7 @@
+# Weather and reference-data provenance
+
+The 2023 `climate.mat` input came with the supplied simulation archive. The supplementary 2021, 2022, and 2024 weather came from the [NASA POWER Daily API](https://power.larc.nasa.gov/docs/services/api/temporal/daily/) for Coimbatore, India (approximately 11.0168° N, 76.9558° E). The stored JSON responses identify POWER Daily API `v2.10.5`; the local source files were saved on 2026-11-23. They request `ALLSKY_SFC_SW_DWN`, `T2M`, `T2M_MAX`, and `T2M_MIN`. `weather_2021_2024.csv` is the derived 365-day-per-year table; 2024-02-29 was omitted for comparability. The raw JSON responses are included so the exact values used here are preserved even if the upstream service is updated.
+
+The original daily comparison data are in `reference/results_daily.mat`, supplied with the study's source archive. They are used only for the archived-versus-rebuilt model check; the primary full-daily outcomes are generated from the rebuilt R2025b model in the experiment folders.
+
+For papers and public derivatives, cite NASA POWER according to its [referencing guide](https://power.larc.nasa.gov/docs/referencing/), including the service version and access date. NASA POWER also requests notification when its data are transmitted to other researchers; see that guide. The project license notice covers the project contributors' own data processing and results, and does not claim ownership of NASA's source observations.
